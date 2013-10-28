@@ -1,6 +1,20 @@
 # Rmagick::Screwdrivers
 
-TODO: Write a gem description
+Simple set of classes and their binary wrappers to make routine operations
+with RMagick pleasant:
+
+* **scale** — to scale an image to a set of scaled images with optional
+watermark (text and/or date) applied
+  * method: `Magick::Screwdrivers.scale`
+  * binary: `bin/rmagick_scale`
+
+* **collage** — to produce a collage of a directory with images
+  * method: `Magick::Screwdrivers.collage`
+  * binary: `bin/rmagick_collage`
+
+* **poster** — to produce a poster from an image (a.k.a demotivator)
+  * method: `Magick::Screwdrivers.poster`
+  * binary: `bin/rmagick_poster`
 
 ## Installation
 
@@ -12,13 +26,20 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or simply install the gem for binary usage:
 
-    $ gem install rmagick-screwdrivers
+    gem install rmagick-screwdrivers
+
+and make heavy use of it:
+
+    $ magick_collage --help
+    $ magick_poster -v --font DejaVuSans --type classic ~/img/img1.jpg 'Hello,' 'I’m a poster'
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ magick_poster --help
+    $ magick_scale --help
+    $ magick_collage --help
 
 ## Contributing
 
@@ -27,3 +48,4 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+

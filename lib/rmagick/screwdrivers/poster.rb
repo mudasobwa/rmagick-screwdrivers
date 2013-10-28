@@ -9,7 +9,6 @@ module Magick
         :color        => '#FFFFFF',
         :stroke       => nil,
         :width        => 600,
-        :above        => true,
         :type         => :classic, # :classic for black square around
         :lineheight   => 6,
         :background   => '#000000',

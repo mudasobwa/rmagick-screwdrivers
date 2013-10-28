@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 require 'RMagick'
+require 'date'
 
 module Magick
   module Screwdrivers
@@ -9,7 +10,6 @@ module Magick
         :widths            => 600,
         :date_in_watermark => false,
         :watermark         => nil,
-        :watermark_above   => true,
         :logger            => nil
       }.merge(options)
 

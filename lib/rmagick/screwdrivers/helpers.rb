@@ -12,14 +12,14 @@ module Magick
     def self.img_from_file file
       img = Magick::Image::read(file).first
 
-      case img.orientation 
-      when Magick::RightTopOrientation
-        img.rotate!(90)
-      when Magick::BottomRightOrientation
-        img.rotate!(180)
-      when Magick::LeftBottomOrientation
-        img.rotate!(-90)
-      end
+      # case img.orientation 
+      # when Magick::RightTopOrientation
+      #   img.rotate!(90)
+      # when Magick::BottomRightOrientation
+      #   img.rotate!(180)
+      # when Magick::LeftBottomOrientation
+      #   img.rotate!(-90)
+      # end
 
       img
     end

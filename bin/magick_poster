@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rmagick/screwdrivers'
+
+# options = {
+#   :color        => '#FFFFFF',
+#   :stroke       => nil,
+#   :width        => 600,
+#   :type         => :classic, # :classic for black square around
+#   :lineheight   => 6,
+#   :background   => '#000000',
+#   :font         => '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf',
+#   :logger       => nil
+# }.merge(options)
+
+options = {}
+FONT_PATH = "/usr/share/fonts/truetype/*/**"
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] FILE TEXT1 TEXT2 [DIR]"
+
+  # Verbose?
+  opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
+    if v
+      require 'logger'
+      options[:logger] = Logger.new STDOUT
+    end
+  end
+  # Color
+  opts.on("-c", "--color CLR", "Color of title (default: '#FFFFFF')") do |color|
+    options[:color] = color
+  end
+  # Stroke
+  opts.on("-s", "--stroke CLR", "Stroke color (default: nil)") do |stroke|
+    options[:stroke] = stroke
+  end
+  # Width
+  opts.on("-w", "--width PIXELS", Integer, "Width to scale image to (default: 600)") do |width|
+    options[:width] = w
+  end
+
+  # Type of poster (with keyword completion).
+  opts.on("-t", "--type TYPE", [:standard, :classic, :negative],
+          "Poster type (standard, classic, negative), default: classic") do |type|
+    options[:type] = type
+  end  
+
+  # Border width
+  opts.on("-r", "--border SIZE", Integer,
+          "Size of border around poster (default: 6)") do |border|
+    options[:lineheight] = border
+  end  
+
+  # Background color
+  opts.on("-b", "--background CLR", "Background color (default: black)") do |background|
+    options[:background] = background
+  end  
+
+  # Font
+  opts.on("-f", "--font FONT", 
+          "Registered with ImageMagick font, or full path to font file (default: Ubuntu-B.ttf)") do |font|
+    options[:font] = font
+  end  
+
+  # No argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+raise "Run `#{$0} --help` for execution examples. Exiting…" if ARGV.size < 3
+
+if options[:font]
+  unless File.exist?(options[:font])
+    options[:font] = Dir.glob(FONT_PATH).each { |f|
+      break f if File.basename(f) =~ /#{options[:font]}/
+    }
+  end
+end
+unless options[:font]
+  ttfs = Dir.glob(FONT_PATH)
+  options[:font] = %w(Ubuntu-B.ttf FreeSans.ttf).each { |ff|
+    result = ttfs.select { |f| File.basename(f) =~ /#{ff}/ }
+    break result.first unless result.empty?
+  }
+end
+
+Magick::Screwdrivers.info options[:logger], "Font #{options[:font] || DEFAULT} was chosen"
+
+file = ARGV.shift
+text1 = ARGV.shift
+text2 = ARGV.shift
+dir = ARGV.size.zero? ? File.dirname(file) : ARGV.last
+`mkdir -p #{dir}`
+
+outfile = File.basename(file).sub(/(\.\w+)$/, "-poster\\1")
+Magick::Screwdrivers::poster(file, text1, text2, options).write(File.join dir, outfile) { self.quality = 90 }

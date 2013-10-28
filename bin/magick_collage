@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rmagick/screwdrivers'
+
+# options = {
+#   :columns       => 5,
+#   :scale_range   => 0.1,
+#   :thumb_width   => 120,
+#   :rotate_angle  => 20,
+#   :background    => 'white',
+#   :border        => '#DDDDDD',
+#   :logger        => nil
+# }.merge(options)
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] FILE|DIR [DIR]"
+
+  # Verbose?
+  opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
+    if v
+      require 'logger'
+      options[:logger] = Logger.new STDOUT
+    end
+  end
+  # Columns
+  opts.on("-c", "--columns COLS", Integer, "Number of columns in collage (default: 5)") do |cols|
+    options[:columns] = cols
+  end
+  # Maximal ± of thumbnail size (random(-s,+s)) 
+  opts.on("-s", "--scale-range VAL", Float, "Maximal ± of standard thumbnail size (default: 0.1)") do |scale_range|
+    options[:scale_range] = scale_range
+  end
+  # Thumbnail standard width
+  opts.on("-t", "--thumbsize SIZE", "Thumbnail standard width (default: 120)") do |thumb_width|
+    options[:thumb_width] = thumb_width
+  end
+  # Maximal angle to rotate thumbnails
+  opts.on("-a", "--rotate-angle ANGLE", "Maximal angle to rotate thumbnails (default: 20°)") do |rotate_angle|
+    options[:rotate_angle] = rotate_angle
+  end
+  # Background color
+  opts.on("-b", "--background COLOR", "Background color (default: 'white')") do |background|
+    options[:background] = background
+  end
+  # Foreground color
+  opts.on("-f", "--foreground COLOR", "Border color (default: '#DDDDDD')") do |foreground|
+    options[:border] = foreground
+  end
+
+  # No argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+raise "Run `#{$0} --help` for execution examples. Exiting…" if ARGV.size.zero? || ARGV.size > 2
+
+file = ARGV.first
+dir = ARGV.size == 2 ? ARGV.last : File.dirname(file)
+`mkdir -p #{dir}`
+
+outfile = File.basename(file).sub(/$/, "-collage.jpg")
+Magick::Screwdrivers::collage(file, options).write(File.join dir, outfile) { self.quality = 90 }

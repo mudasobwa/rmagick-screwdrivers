@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rmagick/screwdrivers'
+
+# options = {
+#   :widths            => 600,
+#   :date_in_watermark => false,
+#   :watermark         => nil,
+#   :logger            => nil
+# }.merge(options)
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] FILE [DIR]"
+
+  # Verbose?
+  opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
+    if v
+      require 'logger'
+      options[:logger] = Logger.new STDOUT
+    end
+  end
+  # Widths
+  opts.on("-w", "--widths X,Y,Z", Array, "Widths of scaled images (default: 600)") do |widths|
+    options[:widths] = widths.map(&:to_i) - [0]
+  end
+  # Puts date on watermark?
+  opts.on("-d", "--date_in_watermark", "Append date to watermark (default: false)") do |dow|
+    options[:date_in_watermark] = dow
+  end
+  # Watermark text
+  opts.on("-m", "--watermark TEXT", "Text to use as watermark (default: none)") do |w|
+    options[:watermark] = w
+  end
+
+
+      # code_list = (CODE_ALIASES.keys + CODES).join(',')
+      # opts.on("--code CODE", CODES, CODE_ALIASES, "Select encoding",
+      #         "  (#{code_list})") do |encoding|
+      #   options.encoding = encoding
+      # end
+
+      # # Optional argument with keyword completion.
+      # opts.on("--type [TYPE]", [:text, :binary, :auto],
+      #         "Select transfer type (text, binary, auto)") do |t|
+      #   options.transfer_type = t
+      # end  
+
+  # No argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+raise "Run `#{$0} --help` for execution examples. Exiting…" if ARGV.size.zero? || ARGV.size > 2
+
+file = ARGV.first
+dir = ARGV.size == 2 ? ARGV.last : File.dirname(file)
+`mkdir -p #{dir}`
+
+Magick::Screwdrivers::scale(file, options).each { |img|
+  outfile = File.basename(file).sub(/(\.\w+)$/, "-#{img.rows}×#{img.columns}\\1")
+  img.write(File.join dir, outfile) { self.quality = 90 }
+}

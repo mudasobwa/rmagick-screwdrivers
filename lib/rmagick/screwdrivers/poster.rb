@@ -13,6 +13,7 @@ module Magick
         :lineheight   => 6,
         :background   => '#000000',
         :font         => '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf',
+        :max_font_size => 48,
         :logger       => nil
       }.merge(options)
 
@@ -29,7 +30,7 @@ module Magick
 
       gc = Magick::Draw.new
 
-      pointsize = img.columns
+      pointsize = [img.columns, options[:max_font_size]].min
       classic_margin = 0
 
       loop do

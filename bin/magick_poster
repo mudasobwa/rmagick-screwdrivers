@@ -30,6 +30,10 @@ OptionParser.new do |opts|
       options[:logger] = Logger.new STDOUT
     end
   end
+  # Quality
+  opts.on("-q", "--quality [1-100]", Integer, "Quality of resulting JPEG (default: 90)") do |quality|
+    options[:quality] = quality
+  end
   # Color
   opts.on("-c", "--color CLR", "Color of title (default: '#FFFFFF')") do |color|
     options[:color] = color
@@ -100,4 +104,6 @@ dir = ARGV.size.zero? ? File.dirname(file) : ARGV.last
 `mkdir -p #{dir}`
 
 outfile = File.basename(file).sub(/(\.\w+)$/, "-poster\\1")
-Magick::Screwdrivers::poster(file, text1, text2, options).write(File.join dir, outfile) { self.quality = 90 }
+Magick::Screwdrivers::poster(file, text1, text2, options).write(File.join dir, outfile) { 
+  self.quality = options[:quality] || 90
+}

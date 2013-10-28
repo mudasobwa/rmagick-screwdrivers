@@ -28,6 +28,10 @@ OptionParser.new do |opts|
       options[:logger] = Logger.new STDOUT
     end
   end
+  # Quality
+  opts.on("-q", "--quality [1-100]", Integer, "Quality of resulting JPEG (default: 90)") do |quality|
+    options[:quality] = quality
+  end
   # Columns
   opts.on("-c", "--columns COLS", Integer, "Number of columns in collage (default: 5)") do |cols|
     options[:columns] = cols
@@ -68,4 +72,6 @@ dir = ARGV.size == 2 ? ARGV.last : File.dirname(file)
 `mkdir -p #{dir}`
 
 outfile = File.basename(file).sub(/$/, "-collage.jpg")
-Magick::Screwdrivers::collage(file, options).write(File.join dir, outfile) { self.quality = 90 }
+Magick::Screwdrivers::collage(file, options).write(File.join dir, outfile) { 
+  self.quality = options[:quality] || 90 
+}

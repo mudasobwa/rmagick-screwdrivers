@@ -25,6 +25,10 @@ OptionParser.new do |opts|
       options[:logger] = Logger.new STDOUT
     end
   end
+  # Quality
+  opts.on("-q", "--quality [1-100]", Integer, "Quality of resulting JPEG (default: 90)") do |quality|
+    options[:quality] = quality
+  end
   # Widths
   opts.on("-w", "--widths X,Y,Z", Array, "Widths of scaled images (default: 600)") do |widths|
     options[:widths] = widths.map(&:to_i) - [0]
@@ -37,19 +41,6 @@ OptionParser.new do |opts|
   opts.on("-m", "--watermark TEXT", "Text to use as watermark (default: none)") do |w|
     options[:watermark] = w
   end
-
-
-      # code_list = (CODE_ALIASES.keys + CODES).join(',')
-      # opts.on("--code CODE", CODES, CODE_ALIASES, "Select encoding",
-      #         "  (#{code_list})") do |encoding|
-      #   options.encoding = encoding
-      # end
-
-      # # Optional argument with keyword completion.
-      # opts.on("--type [TYPE]", [:text, :binary, :auto],
-      #         "Select transfer type (text, binary, auto)") do |t|
-      #   options.transfer_type = t
-      # end  
 
   # No argument, shows at tail.  This will print an options summary.
   opts.on_tail("-h", "--help", "Show this message") do
@@ -67,5 +58,7 @@ dir = ARGV.size == 2 ? ARGV.last : File.dirname(file)
 
 Magick::Screwdrivers::scale(file, options).each { |img|
   outfile = File.basename(file).sub(/(\.\w+)$/, "-#{img.rows}×#{img.columns}\\1")
-  img.write(File.join dir, outfile) { self.quality = 90 }
+  img.write(File.join dir, outfile) { 
+    self.quality = options[:quality] || 90 
+  }
 }

@@ -5,6 +5,7 @@ Gem::Specification.new do |s|
   s.name = 'rmagick-screwdrivers'
   s.version = Magick::Screwdrivers::VERSION
   s.platform = Gem::Platform::RUBY
+  s.license = 'MIT'
   s.date = '2013-10-26'
   s.authors = ['Alexei Matyushkin']
   s.email = 'am@mudasobwa.ru'

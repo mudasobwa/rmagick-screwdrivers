@@ -4,11 +4,10 @@
 .config
 .yardoc
 Gemfile.lock
-InstalledFiles
 _yardoc
 coverage
 doc/
-data/
+data/result/*
 lib/bundler/man
 pkg
 rdoc

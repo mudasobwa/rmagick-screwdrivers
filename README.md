@@ -1,6 +1,6 @@
 # Rmagick::Screwdrivers
 
-[![Build Status](https://travis-ci.org/mudasobwa/rmagic-screwdrivers.png)](https://travis-ci.org/mudasobwa/rmagic-screwdrivers)
+[![Build Status](https://travis-ci.org/mudasobwa/rmagick-screwdrivers.png)](https://travis-ci.org/mudasobwa/rmagick-screwdrivers)
 
 Simple set of classes and their binary wrappers to make routine operations
 with RMagick pleasant:

@@ -1,9 +1,5 @@
 require 'bundler/setup'
 
-require 'bueller'
-Bueller::Tasks.new
-Bueller::GemcutterTasks.new
-
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:examples) do |examples|
   examples.rspec_opts = '-Ispec'

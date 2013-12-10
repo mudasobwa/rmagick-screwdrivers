@@ -13,7 +13,7 @@ end
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:features)
 
-task :default => :examples
+task :default => :features
 
 require 'yard'
 YARD::Rake::YardocTask.new

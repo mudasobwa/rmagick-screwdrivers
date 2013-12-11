@@ -1,6 +1,6 @@
 ---
 layout: page
-title: 'Swiss Knife'
+title: 'RMagick :: Screwdrivers'
 ---
 
 Simple set of classes and their binary wrappers to make routine operations
@@ -39,6 +39,18 @@ and make heavy use of it:
     $ magick_poster -v --font DejaVuSans --type classic ~/img/img1.jpg 'Hello,' 'I’m a poster'
 
 ## Usage
+
+#### [Use Screwdrivers with Ruhoh](use-with-ruhoh.html)
+
+#### Within ruby project
+
+    require 'rmagick/screwdrivers'
+
+    …
+
+    Magick::Screwdrivers.collage(@img_dir).write @collage_file_name
+
+#### Command-line utilities
 
     $ magick_poster --help
     $ magick_scale --help

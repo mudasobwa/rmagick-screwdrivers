@@ -44,6 +44,8 @@ and make heavy use of it:
     $ magick_scale --help
     $ magick_collage --help
 
+## [Ruhoh](http://ruhoh.com) [plugin](http://rocket-science.ru/rmagick-screwdrivers/use-with-ruhoh.html)
+
 ## Contributing
 
 1. Fork it

@@ -10,7 +10,7 @@ Ruhoh utilizes the same philosophy as jekill does. The user creates structured c
 using markdown, textile or another markup processor and the generator produces the static site.
 Ruhoh supports `rsync` for deployment, uses `mustache` for templating and looks like a jekyll 2.0.
 
-Anyway, I integrated `rmagick-screwdrivers` into ruhoh to make a life easier. The goals I tried to achieve:
+Anyway, I integrated `rmagick-screwdrivers` into ruhoh to make a life easier. The goal I tried to achieve:
 
 * Easily create a post entry with, say, photo-report. Lets imagine you have visited North Pole and made
 for about 1K of photos. Then you picked up the top-twenty and decided to share them with your friends.

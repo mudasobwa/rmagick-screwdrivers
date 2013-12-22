@@ -10,3 +10,4 @@ gemspec
 #gem "rspec", :git => 'git://github.com/rspec/rspec.git'
 #
 gem 'rspec'
+gem 'coveralls', require: false

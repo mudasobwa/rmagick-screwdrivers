@@ -1,5 +1,6 @@
 *.gem
 *.rbc
+.coveralls.yml
 .bundle
 .config
 .yardoc

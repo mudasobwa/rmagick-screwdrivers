@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/mudasobwa/rmagick-screwdrivers.png)](https://travis-ci.org/mudasobwa/rmagick-screwdrivers)
 [![Gemnasium](https://gemnasium.com/mudasobwa/rmagick-screwdrivers.png?travis)](https://gemnasium.com/mudasobwa/rmagick-screwdrivers)
 [![Gem Version](https://badge.fury.io/rb/rmagick-screwdrivers.png)](http://badge.fury.io/rb/rmagick-screwdrivers)
+[![Coverage Status](https://coveralls.io/repos/mudasobwa/rmagick-screwdrivers/badge.png?branch=master)](https://coveralls.io/r/mudasobwa/rmagick-screwdrivers?branch=master)
 
 Simple set of classes and their binary wrappers to make routine operations
 with RMagick pleasant:

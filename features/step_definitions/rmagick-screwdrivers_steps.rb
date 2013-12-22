@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 Given(/^a folder "(.*?)" is given as the input$/) do |dir|
   @input = dir
 end

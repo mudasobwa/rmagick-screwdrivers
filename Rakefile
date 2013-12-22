@@ -13,7 +13,11 @@ end
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:features)
 
-task :default => :features
+require 'coveralls/rake/task'
+Coveralls::RakeTask.new
+task :test_with_coveralls => [:spec, :features, 'coveralls:push']
+
+task :default => :test_with_coveralls
 
 require 'yard'
 YARD::Rake::YardocTask.new

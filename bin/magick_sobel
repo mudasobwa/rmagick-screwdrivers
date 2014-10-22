@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+# Encoding: utf-8
+
+require 'optparse'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rmagick/screwdrivers'
+
+# options = {
+#   :thoroughly   => false,
+#   :logger       => nil
+# }.merge(options)
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] FILE"
+
+  # Quality
+  opts.on("-q", "--quality [1-100]", Integer, "Quality of resulting JPEG (default: 90)") do |quality|
+    options[:quality] = quality
+  end
+
+  # Thoroughly
+  opts.on("-r", "--roughly", "If set, the image will not be grayscaled before processing (requires less resources, default: false)") do |roughly|
+    options[:roughly] = !!roughly
+  end
+
+  # Verbose?
+  opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
+    if v
+      require 'logger'
+      options[:logger] = Logger.new STDOUT
+    end
+  end
+
+  # No argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+raise "Run `#{$0} --help` for execution examples. Exiting…" if ARGV.size < 1
+
+file = ARGV.shift
+
+outfile = File.basename(file).sub(/(\.\w+)$/, "-sobel\\1")
+Magick::Screwdrivers::sobel(file, options).write(File.join File.dirname(file), outfile) { 
+  self.quality = options[:quality] || 90
+}

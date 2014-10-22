@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.bindir        = 'bin'
-  s.executables   = ['magick_collage', 'magick_poster', 'magick_scale']
+  s.executables   = ['magick_collage', 'magick_poster', 'magick_scale', 'magick_sobel']
   s.require_paths = ['lib']
 
   s.add_development_dependency 'rspec'

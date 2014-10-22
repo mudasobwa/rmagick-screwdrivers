@@ -12,6 +12,8 @@ require 'rmagick/screwdrivers'
 #   :widths            => 600,
 #   :date_in_watermark => false,
 #   :watermark         => nil,
+#   :color             => nil,
+#   :overlap           => nil,
 #   :logger            => nil
 # }.merge(options)
 
@@ -41,6 +43,14 @@ OptionParser.new do |opts|
   # Watermark text
   opts.on("-m", "--watermark TEXT", "Text to use as watermark (default: none)") do |w|
     options[:watermark] = w
+  end
+  # Watermark color
+  opts.on("-c", "--color COLOR", "Color to use as watermark (default: negative)") do |c|
+    options[:color] = c
+  end
+  # Watermark composite
+  opts.on("-o", "--overlap NAME", "Color to use as watermark (default: subtract) → see http://www.imagemagick.org/RMagick/doc/constants.html#CompositeOperator") do |o|
+    options[:overlap] = o
   end
 
   # No argument, shows at tail.  This will print an options summary.

@@ -10,8 +10,13 @@ module Magick
         :widths            => 600,
         :date_in_watermark => false,
         :watermark         => nil,
+        :color             => 'rgba(66%, 66%, 66%, 0.33)',
+        :overlap           => nil,
         :logger            => nil
       }.merge(options)
+
+      options[:overlap] = options[:overlap] && Magick.constants.include?("#{options[:overlap].capitalize}CompositeOp".to_sym) ?
+                     Magick.const_get("#{options[:overlap].capitalize}CompositeOp".to_sym) : Magick::ModulateCompositeOp
 
       img = img_from_file file
 
@@ -45,17 +50,17 @@ module Magick
           draw.annotate(mark, 0, 0, 5, 2, options[:watermark]) do
             self.encoding = 'Unicode'
             self.gravity = Magick::SouthEastGravity
-            self.fill 'rgba(60%, 60%, 60%, 0.40)'
-            self.stroke = 'none'
-            self.pointsize = 1 + 2 * Math.log(sz, 3).to_i
+            self.fill = options[:color]
+            self.stroke = 'transparent'
+            self.pointsize = 2 + 2 * Math.log(sz, 3).to_i
             self.font_family = 'Comfortaa'
             self.font_weight = Magick::NormalWeight
             self.font_style = Magick::NormalStyle
           end
-          curr = curr.composite(mark.rotate(-90), Magick::SouthEastGravity, Magick::SubtractCompositeOp)
+          curr = curr.composite(mark.rotate(-90), Magick::SouthEastGravity, options[:overlap] )
         end
 
-        info options[:logger], "Scaling to width #{curr.rows}×#{curr.columns}, watermark: “#{will_wm ? options[:watermark] : 'NONE'}”"
+        info options[:logger], "Scaling to width #{curr.rows}×#{curr.columns}, method: #{options[:overlap]}, watermark: “#{will_wm ? options[:watermark] : 'NONE'}”"
 
         result << curr
       }

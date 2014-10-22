@@ -45,7 +45,7 @@ OptionParser.new do |opts|
   end
   # Width
   opts.on("-w", "--width PIXELS", Integer, "Width to scale image to (default: 600)") do |width|
-    options[:width] = w
+    options[:width] = width
   end
 
   # Type of poster (with keyword completion).

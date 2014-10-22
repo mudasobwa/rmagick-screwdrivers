@@ -34,6 +34,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bueller'
 
   s.add_dependency 'rmagick'
-  s.add_dependency 'ropencv'
+#   s.add_dependency 'ropencv'
 end
 

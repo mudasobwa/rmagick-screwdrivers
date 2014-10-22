@@ -21,6 +21,10 @@ watermark (text and/or date) applied
   * method: `Magick::Screwdrivers.poster`
   * binary: `bin/rmagick_poster`
 
+* **sobel** — edge detection by Sobel operator (**experimental**, slow)
+  * method: `Magick::Screwdrivers.sobel`
+  * binary: `bin/rmagick_sobel`
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -45,6 +49,7 @@ and make heavy use of it:
     $ magick_poster --help
     $ magick_scale --help
     $ magick_collage --help
+    $ magick_sobel --help
 
 ## [Ruhoh](http://ruhoh.com) [plugin](http://rocket-science.ru/rmagick-screwdrivers/use-with-ruhoh.html)
 

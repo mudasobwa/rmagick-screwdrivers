@@ -3,13 +3,6 @@
 require 'RMagick'
 
 module Magick
-  class Image # monkeypatch
-    def at x, y
-      px = self.pixel_color(x, y)
-      (px.red + px.green + px.blue) / 3
-    end
-  end
-
   module Screwdrivers
     # based on http://blog.saush.com/2011/04/20/edge-detection-with-the-sobel-operator-in-ruby/
     def self.sobel file, options={}

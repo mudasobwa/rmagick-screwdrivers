@@ -1,0 +1,90 @@
+#!/usr/bin/env ruby
+# Encoding: utf-8
+
+require 'optparse'
+require 'ostruct'
+
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
+
+require 'rmagick/screwdrivers'
+
+# options[:lowThreshold] = 2.5 unless options[:lowThreshold] && options[:lowThreshold] >= 0
+# options[:highThreshold] = 7.5 unless options[:highThreshold] && options[:highThreshold] >= 0
+# options[:kernelRadius] = 2.0 unless options[:kernelRadius] && options[:kernelRadius] >= 0.1
+# options[:kernelWidth] = 16.0 unless options[:kernelWidth] && options[:kernelWidth] >= 2.0
+# options[:contrastNormalized] = !!options[:contrastNormalized]
+
+options = OpenStruct.new
+options.quality = 90
+options.lowThreshold = 2.5
+options.highThreshold = 7.5
+options.kernelRadius = 2.0
+options.kernelWidth = 16
+options.color = 'black'
+options.contrastNormalized = false
+options.logger = nil
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} [options] FILE"
+
+  # Quality
+  opts.on("-q", "--quality [1-100]", Integer, "Quality of resulting JPEG (default: 90)") do |quality|
+    options.quality = quality
+  end
+
+  # lowThreshold
+  opts.on("-l", "--lowThreshold VAL", Float, "Sets low threshold (default: 2.5)") do |lowThreshold|
+    options.lowThreshold = lowThreshold
+  end
+
+  # highThreshold
+  opts.on("-g", "--highThreshold VAL", Float, "Sets high threshold (default: 7.5)") do |highThreshold|
+    options.highThreshold = highThreshold
+  end
+
+  # kernelRadius
+  opts.on("-r", "--kernelRadius VAL", Float, "Sets kernel radius (default: 2.0)") do |kernelRadius|
+    options.kernelRadius = kernelRadius
+  end
+
+  # kernelWidth
+  opts.on("-w", "--kernelWidth VAL", Integer, "Sets kernel width (default: 16)") do |kernelWidth|
+    options.kernelWidth = kernelWidth
+  end
+
+  # color
+  opts.on("-o", "--color TEXT", "Specify color to draw background (default: black)") do |color|
+    options.color = color
+  end
+
+  # contrastNormalized
+  opts.on("-c", "--contrastNormalized", "Sets whether the contrast should be normalized (default: false)") do |contrastNormalized|
+    options.contrastNormalized = !!contrastNormalized
+  end
+
+
+  # Verbose?
+  opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
+    if v
+      require 'logger'
+      options.logger = Logger.new STDOUT
+    end
+  end
+
+  # No argument, shows at tail.  This will print an options summary.
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+
+end.parse!
+
+raise "Run `#{$0} --help` for execution examples. Exiting…" if ARGV.size < 1
+
+file = ARGV.shift
+
+outfile = File.basename(file).sub(/(\.\w+)$/, "-canny\\1")
+Magick::Screwdrivers::canny(file, options).write(File.join File.dirname(file), outfile) { 
+  self.quality = options.quality || 90
+}

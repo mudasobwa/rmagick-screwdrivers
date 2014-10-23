@@ -16,6 +16,7 @@ module Magick
 
       begin
         orig = img_from_file(file)
+#        orig = orig.gaussian_blur 0, 3.0
         orig = orig.quantize 256, Magick::GRAYColorspace unless options[:roughly]
       rescue
         warn(options[:logger], "Skipping invalid file #{file}…")

@@ -24,7 +24,7 @@ OptionParser.new do |opts|
   end
 
   # Thoroughly
-  opts.on("-r", "--roughly", "If set, the image will not be grayscaled before processing (requires less resources, default: false)") do |roughly|
+  opts.on("-u", "--roughly", "If set, the image will not be grayscaled before processing (requires less resources, default: false)") do |roughly|
     options[:roughly] = !!roughly
   end
 

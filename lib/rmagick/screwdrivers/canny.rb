@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-# http:# www.tomgibara.com/computer-vision/CannyEdgeDetector.java
+# http://www.tomgibara.com/computer-vision/CannyEdgeDetector.java
 # @author Tom Gibara
 # ported from java Alexei Matyushkin
 
@@ -22,7 +22,7 @@ module Magick
 		end
 
 		def self.hypot x, y
-			return Math.hypot x, y # x.abs + y.abs
+			Math.hypot x, y # x.abs + y.abs
 		end
 
 		def self.normalizeContrast data
@@ -208,9 +208,12 @@ module Magick
     	options.kernelWidth = 16 unless options.kernelWidth && options.kernelWidth >= 2
     	options.color ||= 'black'
     	options.contrastNormalized = !!options.contrastNormalized
+    	options.roughly = !!options.roughly
 
 		begin
 			orig = img_from_file(file)
+	        orig = orig.gaussian_blur 0, 3.0
+	        orig = orig.quantize 256, Magick::GRAYColorspace unless options.roughly
 		rescue
 			warn(options.logger, "Skipping invalid file #{file}…")
 			return nil
@@ -231,7 +234,7 @@ module Magick
 
 		magnitude = Canny::computeGradients options.kernelRadius, options.kernelWidth, width, height, data
 
-		data = (0...width*height).map { 0.0 }
+		data = (0...width*height).map { 0 }
 		offset = 0
 		for y in 0...height
 			for x in 0...width

@@ -22,6 +22,8 @@ options.highThreshold = 7.5
 options.kernelRadius = 2.0
 options.kernelWidth = 16
 options.color = 'black'
+options.roughly = true
+options.hough = false
 options.contrastNormalized = false
 options.logger = nil
 
@@ -63,6 +65,16 @@ OptionParser.new do |opts|
     options.contrastNormalized = !!contrastNormalized
   end
 
+  # Thoroughly
+  opts.on("-u", "--thoroughly", "If set, the image will not be grayscaled before processing (requires less resources, default: false)") do |thoroughly|
+    options.roughly = !thoroughly
+  end
+
+  # Thoroughly
+  opts.on("-y", "--hough", "If set, the hough matrix will be built and an image will be rotated accordingly, default: false)") do |hough|
+    options.hough = hough
+  end
+
 
   # Verbose?
   opts.on("-v", "--verbose", "Run verbosely (default: false)") do |v|
@@ -88,3 +100,10 @@ outfile = File.basename(file).sub(/(\.\w+)$/, "-canny\\1")
 Magick::Screwdrivers::canny(file, options).write(File.join File.dirname(file), outfile) { 
   self.quality = options.quality || 90
 }
+
+if options.hough
+  houghfile = File.basename(file).sub(/(\.\w+)$/, "-hough\\1")
+  Magick::Screwdrivers::hough(file, {:roughly => options.roughly, :logger => options.logger}).write(File.join File.dirname(file), houghfile) { 
+    self.quality = options.quality || 90
+  }
+end

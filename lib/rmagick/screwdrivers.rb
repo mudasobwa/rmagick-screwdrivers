@@ -3,6 +3,7 @@ require "rmagick/screwdrivers/helpers"
 require "rmagick/screwdrivers/poster"
 require "rmagick/screwdrivers/collage"
 require "rmagick/screwdrivers/scale"
+require "rmagick/screwdrivers/hough"
 require "rmagick/screwdrivers/sobel"
 require "rmagick/screwdrivers/canny"
 

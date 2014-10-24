@@ -100,10 +100,3 @@ outfile = File.basename(file).sub(/(\.\w+)$/, "-canny\\1")
 Magick::Screwdrivers::canny(file, options).write(File.join File.dirname(file), outfile) { 
   self.quality = options.quality || 90
 }
-
-if options.hough
-  houghfile = File.basename(file).sub(/(\.\w+)$/, "-hough\\1")
-  Magick::Screwdrivers::hough(file, {:roughly => options.roughly, :logger => options.logger}).write(File.join File.dirname(file), houghfile) { 
-    self.quality = options.quality || 90
-  }
-end

@@ -67,7 +67,7 @@ file = ARGV.first
 dir = ARGV.size == 2 ? ARGV.last : File.dirname(file)
 `mkdir -p #{dir}`
 
-Magick::Screwdrivers::scale(file, options).each { |img|
+Magick::Screwdrivers::scale_fan(file, options).each { |img|
   outfile = File.basename(file).sub(/(\.\w+)$/, "-#{img.rows}×#{img.columns}\\1")
   img.write(File.join dir, outfile) { 
     self.quality = options[:quality] || 90 

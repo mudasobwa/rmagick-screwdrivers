@@ -9,17 +9,16 @@ module Magick
     # ==     Image preparation     =================================
     # ==============================================================
 
-    def self.img_from_file file
-      img = Magick::Image::read(file).first
+    def self.imagify image, silent = false
+      img = case image
+            when File, String then Magick::Image::read(image).first
+            when Image then image
+            end
 
-      # case img.orientation 
-      # when Magick::RightTopOrientation
-      #   img.rotate!(90)
-      # when Magick::BottomRightOrientation
-      #   img.rotate!(180)
-      # when Magick::LeftBottomOrientation
-      #   img.rotate!(-90)
-      # end
+      if img.nil?
+        Magick::Screwdrivers.warn(options[:logger], "Skipping invalid image descriptor #{image}…")
+        throw ArgumentError.new("Invalid argument in call to imagify descriptor [#{image}]") unless silent
+      end
 
       img
     end

@@ -4,14 +4,13 @@
 # @author Tom Gibara
 # ported from java Alexei Matyushkin
 
-require 'RMagick'
 require 'date'
 require 'ostruct'
 
 module Magick
   module Screwdrivers
     module Canny
-      attr_reader :options 
+      attr_reader :options
       @options = {
         :lowThreshold       => 2.5,
         :highThreshold      => 7.5,

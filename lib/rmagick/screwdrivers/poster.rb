@@ -1,11 +1,9 @@
 # encoding: utf-8
 
-require 'RMagick'
-
 module Magick
   module Screwdrivers
     module Poster
-      attr_reader :options 
+      attr_reader :options
       @options = {
         :color          => '#FFFFFF',
         :stroke         => nil,
@@ -24,7 +22,7 @@ module Magick
         text ||= ''
 
         img = Magick::Screwdrivers.imagify image
-        
+
         img.thumbnail!(options[:width].to_f / img.columns.to_f)
 
         mark = Magick::Image.new(img.columns, img.rows) do
@@ -38,15 +36,15 @@ module Magick
 
         loop do
           gc.pointsize = pointsize -= 1 + pointsize / 33
-  
+
           m1 = gc.get_type_metrics(title)
           w1 = m1.width
           h1 = (m1.bounds.y2 - m1.bounds.y1).round
-  
+
           m2 = gc.get_type_metrics(text)
           w2 = m2.width
           h2 = (m2.bounds.y2 - m2.bounds.y1).round
-  
+
           if w1 < img.columns - 10 * options[:lineheight] && w2 < img.columns - 10 * options[:lineheight]
             if options[:type] == :classic
               classic_margin = h2
@@ -55,13 +53,13 @@ module Magick
               gc.stroke = '#FFFFFF'
               gc.fill = options[:background]
               gc.rectangle(
-                options[:lineheight] * 7.0 / 6.0, 
+                options[:lineheight] * 7.0 / 6.0,
                 options[:lineheight] * 7 / 6,
-                img.columns + options[:lineheight] * 21 / 6, 
+                img.columns + options[:lineheight] * 21 / 6,
                 img.rows+options[:lineheight] * 21 / 6
               )
               gc.composite(
-                7 * options[:lineheight] / 3, 
+                7 * options[:lineheight] / 3,
                 7 * options[:lineheight] / 3,
                 0, 0,
                 img, Magick::OverCompositeOp
@@ -76,7 +74,7 @@ module Magick
         gc.stroke = options[:stroke] || 'none'
         gc.stroke_width = 1
         gc.font = options[:font]
-  
+
         case options[:type]
         when :classic
           gc.annotate(mark, 0, 0, 0, classic_margin+2*options[:lineheight], title) do
@@ -87,11 +85,11 @@ module Magick
             self.gravity = Magick::NorthGravity
           end
         end
-  
+
         gc.annotate(mark, 0, 0, 0, 0, text) do
           self.gravity = Magick::SouthGravity
         end
-  
+
         case options[:type]
         when :classic
           mark
@@ -104,12 +102,12 @@ module Magick
         end
       end
     end
-    
+
     def self.poster image, title, text, options
       Poster::yo image, title, text, options
     end
   end
-  
+
   class Image
     def poster title, text, options
       Screwdrivers::Poster::yo self, title, text, options

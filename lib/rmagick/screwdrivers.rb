@@ -1,3 +1,5 @@
+require 'rmagick'
+
 require "rmagick/screwdrivers/version"
 require "rmagick/screwdrivers/helpers"
 require "rmagick/screwdrivers/poster"
@@ -14,7 +16,7 @@ module Magick
       attr_reader :options
     end
     @options = {
-      :logger => nil
+      logger: nil
     }
   end
   class Image # monkeypatch

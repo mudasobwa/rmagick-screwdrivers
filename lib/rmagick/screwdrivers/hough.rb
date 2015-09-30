@@ -1,11 +1,9 @@
 # encoding: utf-8
 
-require 'RMagick'
-
 module Magick
   module Screwdrivers
     module Hough
-      attr_reader :options 
+      attr_reader :options
       @options = {
         :roughly            => false
       }
@@ -17,15 +15,15 @@ module Magick
       def self.is_light? px
         px.red + px.green + px.blue > 600
       end
- 
+
       # based on http://jonathan-jackson.net/ruby-hough-hack.html
       def self.yo image, options = {}
         options = Magick::Screwdrivers.options.merge(@options).merge(OpenStruct === options ? options.to_h : options)
 
         orig = Magick::Screwdrivers.imagify  image
-        
+
         orig = orig.quantize 256, Magick::GRAYColorspace unless options[:roughly]
-  
+
         trigons = { :cos => [], :sin => [] }
         hough = Hash.new(0)
         (orig.rows - 1).times do |y|
@@ -40,7 +38,7 @@ module Magick
             end
           end
         end
-  
+
         hough.sort_by { |k,v| v }
       end
     end
@@ -49,7 +47,7 @@ module Magick
       Hough::yo image, options
     end
   end
-  
+
   class Image
     def hough options
       Screwdrivers::Hough::yo self, options

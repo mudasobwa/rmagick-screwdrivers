@@ -24,16 +24,14 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.bindir        = 'bin'
-  s.executables   = ['magick_collage', 'magick_poster', 'magick_scale', 'magick_sobel']
+  s.executables   = ['magick_collage', 'magick_poster', 'magick_scale', 'magick_sobel', 'magick_canny']
   s.require_paths = ['lib']
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'cucumber'
-  s.add_development_dependency 'yard-cucumber'  
-  s.add_development_dependency 'bueller'
+  s.add_development_dependency 'yard-cucumber'
 
   s.add_dependency 'rmagick'
 #   s.add_dependency 'ropencv'
 end
-

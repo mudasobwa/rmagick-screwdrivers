@@ -1,12 +1,9 @@
 # encoding: utf-8
 
-require 'RMagick'
-require 'date'
-
 module Magick
   module Screwdrivers
     module Scale
-      attr_reader :options 
+      attr_reader :options
       @options = {
         :widths            => 600,
         :date_in_watermark => false,
@@ -29,21 +26,21 @@ module Magick
         date ||= Date.parse(img.properties['date:modify']) if img.properties['date:modify']
         date ||= Date.parse(img.properties['date:create']) if img.properties['date:create']
         date ||= Date.parse(img.properties['xap:CreateDate']) if img.properties['xap:CreateDate']
-  
+
         options[:watermark] = ([
           options[:watermark], date.strftime('%y/%m/%d')] - [nil]
         ).join(' :: ').strip if options[:date_in_watermark]
-  
+
         result = ImageList.new
-  
+
         [*options[:widths]].each { |sz|
           unless Integer === sz && sz < img.columns && sz > 0
             warn options[:logger], "Invalid width #{sz} (original is #{img.columns}), skipping…"
             next
           end
-  
+
           curr = img.resize_to_fit(sz)
-  
+
           if will_wm = (options[:watermark] && curr.rows >= 400)
             mark = Magick::Image.new(curr.rows, curr.columns) do
               self.background_color = 'transparent'
@@ -62,9 +59,9 @@ module Magick
             end
             curr = curr.composite(mark.rotate(-90), Magick::SouthEastGravity, options[:overlap] )
           end
-  
+
           Magick::Screwdrivers.info options[:logger], "Scaling to width #{curr.rows}×#{curr.columns}, method: #{options[:overlap]}, watermark: “#{will_wm ? options[:watermark] : 'NONE'}”"
-  
+
           result << curr
         }
 

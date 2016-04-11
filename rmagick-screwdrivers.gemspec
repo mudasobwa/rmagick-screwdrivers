@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.executables   = ['magick_collage', 'magick_poster', 'magick_scale', 'magick_sobel', 'magick_canny']
   s.require_paths = ['lib']
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'cucumber'
